@@ -2,32 +2,80 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Toggle extends React.Component {
+function UserGreeting(props) {
+  return <h1>Welcome back!</h1>;
+}
+
+function GuestGreeting(props) {
+  return <h1>Please sign up.</h1>;
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+function LoginButton(props) {
+  return (
+    <button onClick = {props.onClick}>
+       Login
+    </button>
+  );
+}
+
+function LogoutButton(props) {
+  return (
+    <button onClick = {props.onClick}>
+      Logout
+    </button>
+  );
+}
+
+class LoginControl extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+
     this.state = {
-      isToggleOn: true
+      isLoggedIn: false
     };
-
-    // 这个绑定是必要的，使`this`在回调中起作用
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick() {
-    this.setState(prevState => ({
-      isToggleOn: !prevState.isToggleOn
-    }));
+  handleLoginClick() {
+    this.setState({
+      isLoggedIn: true
+    });
   }
+
+  handleLogoutClick() {
+    this.setState({
+      isLoggedIn: false
+    });
+  }
+
   render() {
-    return (
-      <button onClick={this.handleClick}>
-        {this.state.isToggleOn ? 'ON' : 'OFF'}
-      </button>
-    );
+    const isLoggedIn = this.state.isLoggedIn;
+    let button = null;
+    if (isLoggedIn) {
+      button = < LogoutButton onClick = {
+        this.handleLoginClick
+      } >
+    } else {
+      button = < LoginButton onClick = {
+        this.handleLoginClick
+      } >
+    }
+    return ();
   }
 }
 
 ReactDOM.render(
-  <Toggle />,
+  <LoginControl />,
   document.getElementById('root')
 );
